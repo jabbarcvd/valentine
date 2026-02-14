@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Gopika A K</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap');
+        
+        body {
+            background: #0f0005;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(340, 100%, 15%, 1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(340, 100%, 10%, 1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(340, 100%, 15%, 1) 0, transparent 50%);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+
+        .cursive { font-family: 'Dancing Script', cursive; }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        #no-btn {
+            transition: all 0.15s ease-out;
+            touch-action: none;
+        }
+
+        .yes-glow {
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.6);
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 10px rgba(236, 72, 153, 0.4); }
+            50% { box-shadow: 0 0 25px rgba(236, 72, 153, 0.8); }
+            100% { box-shadow: 0 0 10px rgba(236, 72, 153, 0.4); }
+        }
+
+        .fade-in { animation: fadeIn 1.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="z-20 text-center px-4 w-full max-w-md">
+        <div id="question-card" class="glass-card p-8 md:p-12 fade-in">
+            <h2 class="text-pink-500 text-xs uppercase tracking-[0.4em] mb-4">Strictly for you</h2>
+            <h1 class="text-white text-4xl md:text-5xl cursive mb-6">Gopika A K ❤️</h1>
+            <p class="text-gray-300 text-lg mb-10 leading-relaxed">Will you be my Valentine?</p>
+            
+            <div id="button-container" class="flex flex-col gap-4 items-center justify-center min-h-[150px]">
+                <button onclick="handleYes()" class="yes-glow bg-gradient-to-r from-pink-600 to-rose-500 text-white w-40 py-4 rounded-2xl font-bold text-lg active:scale-95 transition-transform">
+                    YES
+                </button>
+                
+                <button id="no-btn" 
+                        onmouseover="moveButton()" 
+                        ontouchstart="moveButton()" 
+                        class="bg-white/10 text-gray-400 w-40 py-4 rounded-2xl font-medium border border-white/10">
+                    No
+                </button>
+            </div>
+        </div>
+
+        <div id="celebration" class="hidden scale-up">
+            <h1 class="text-white text-6xl cursive mb-2 text-pink-500">Yay! ❤️</h1>
+            <p class="text-white text-2xl font-light tracking-wide mb-6">I knew you'd say yes!</p>
+            <div class="text-gray-400 italic">Happy Valentine's Day, Gopika kutteee!</div>
+        </div>
+    </div>
+
+    <script>
+        function moveButton() {
+            const btn = document.getElementById('no-btn');
+            
+            // Calculate random positions
+            // Keeping it within 70% of the viewport to ensure it doesn't go off-screen
+            const maxX = window.innerWidth - btn.offsetWidth - 20;
+            const maxY = window.innerHeight - btn.offsetHeight - 20;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            btn.style.position = 'fixed';
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+            btn.style.zIndex = '1000';
+        }
+
+        function handleYes() {
+            document.getElementById('question-card').classList.add('hidden');
+            const celeb = document.getElementById('celebration');
+            celeb.classList.remove('hidden');
+
+            // Celebration Fireworks Sequence
+            const end = Date.now() + (10 * 1000); // 10 seconds of fireworks
+            const colors = ['#ec4899', '#be123c', '#ffffff', '#fb7185'];
+
+            (function frame() {
+                confetti({
+                    particleCount: 3,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: colors
+                });
+                confetti({
+                    particleCount: 3,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: colors
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+            
+            // Big burst at the start
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: colors
+            });
+        }
+    </script>
+</body>
+</html>
