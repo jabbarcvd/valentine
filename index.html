@@ -3,145 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Gopika A K</title>
+    <title id="page-title">Classified Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@300;400;700&display=swap');
         
-        body {
-            background: #0f0005;
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(340, 100%, 15%, 1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(340, 100%, 10%, 1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(340, 100%, 15%, 1) 0, transparent 50%);
-            font-family: 'Poppins', sans-serif;
-            overflow: hidden;
-            height: 100vh;
+        body, html {
             margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            touch-action: manipulation;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Inter', sans-serif;
+            transition: background 2s duration;
+        }
+
+        /* Initial Noir State */
+        .noir-bg {
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+        }
+
+        /* Rich Valentine State */
+        .valentine-bg {
+            background: radial-gradient(circle at center, #2b0008 0%, #050002 100%) !important;
         }
 
         .cursive { font-family: 'Dancing Script', cursive; }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        .glass-vault {
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
         }
 
-        #no-btn {
-            transition: all 0.15s ease-out;
-            touch-action: none;
+        .input-hidden {
+            background: transparent;
+            border-bottom: 2px solid #333;
+            color: white;
+            letter-spacing: 0.5em;
+            text-align: center;
+            transition: all 0.5s;
         }
 
-        .yes-glow {
-            box-shadow: 0 0 20px rgba(236, 72, 153, 0.6);
-            animation: pulse-glow 2s infinite;
+        .input-hidden:focus {
+            outline: none;
+            border-color: #fff;
         }
 
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 10px rgba(236, 72, 153, 0.4); }
-            50% { box-shadow: 0 0 25px rgba(236, 72, 153, 0.8); }
-            100% { box-shadow: 0 0 10px rgba(236, 72, 153, 0.4); }
+        .btn-unlock {
+            border: 1px solid #333;
+            color: #666;
+            transition: all 0.3s;
         }
 
-        .fade-in { animation: fadeIn 1.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .btn-unlock:hover {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        /* Valentine Elements (Hidden initially) */
+        .pink-glow {
+            color: #ff4d6d;
+            text-shadow: 0 0 20px rgba(255, 77, 109, 0.5);
+        }
+
+        #no-btn { position: relative; transition: all 0.2s ease; }
+
+        .heart-particle {
+            position: absolute;
+            color: rgba(255, 77, 109, 0.2);
+            pointer-events: none;
+            z-index: 1;
+        }
     </style>
 </head>
-<body>
+<body class="noir-bg flex items-center justify-center">
 
-    <div class="z-20 text-center px-4 w-full max-w-md">
-        <div id="question-card" class="glass-card p-8 md:p-12 fade-in">
-            <h2 class="text-pink-500 text-xs uppercase tracking-[0.4em] mb-4">Strictly for you</h2>
-            <h1 class="text-white text-4xl md:text-5xl cursive mb-6">Gopika A K ❤️</h1>
-            <p class="text-gray-300 text-lg mb-10 leading-relaxed">Will you be my Valentine?</p>
+    <div id="particles-container"></div>
+
+    <div id="lock-section" class="z-50 text-center p-8 animate__animated animate__fadeIn">
+        <h2 class="text-white/30 text-[10px] uppercase tracking-[1em] mb-12">System Locked</h2>
+        <div class="glass-vault p-10 w-80">
+            <input type="password" id="secret-code" placeholder="********" maxlength="8"
+                   class="input-hidden w-full py-4 text-2xl mb-8">
             
-            <div id="button-container" class="flex flex-col gap-4 items-center justify-center min-h-[150px]">
-                <button onclick="handleYes()" class="yes-glow bg-gradient-to-r from-pink-600 to-rose-500 text-white w-40 py-4 rounded-2xl font-bold text-lg active:scale-95 transition-transform">
-                    YES
-                </button>
-                
-                <button id="no-btn" 
-                        onmouseover="moveButton()" 
-                        ontouchstart="moveButton()" 
-                        class="bg-white/10 text-gray-400 w-40 py-4 rounded-2xl font-medium border border-white/10">
-                    No
-                </button>
-            </div>
-        </div>
+            <button onclick="checkCode()" class="btn-unlock w-full py-3 rounded-lg text-xs uppercase tracking-widest font-bold">
+                Enter Void
+            </button>
 
-        <div id="celebration" class="hidden scale-up">
-            <h1 class="text-white text-6xl cursive mb-2 text-pink-500">Yay! ❤️</h1>
-            <p class="text-white text-2xl font-light tracking-wide mb-6">I knew you'd say yes!</p>
-           <div class="text-gray-400 italic">I’m so lucky to have you in my corner. Thank you for being my favorite person and my best friend.</div>
-            <div class="text-gray-400 italic">Happy Valentine's Day, Gopika kutteee!</div>
+            <p id="hint-text" class="text-pink-600/60 text-[10px] mt-6 uppercase tracking-widest opacity-0 transition-opacity duration-1000">
+                Hint: Your birthday (DDMMYYYY)
+            </p>
+        </div>
+    </div>
+
+    <div id="proposal-section" class="hidden text-center z-50 px-6 max-w-2xl">
+        <h3 class="text-pink-500 text-xs uppercase tracking-[0.6em] mb-4 animate__animated animate__fadeInDown">Authorized Access</h3>
+        <h1 class="text-white text-6xl md:text-8xl cursive mb-8 animate__animated animate__zoomIn">Gopika A K ❤️</h1>
+        <p class="text-gray-400 text-lg mb-12 font-light tracking-wide italic">
+            Out of all the people in the world, you're the only one I wanted to unlock this for.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-8 items-center justify-center min-h-[120px]">
+            <button onclick="celebrate()" class="bg-gradient-to-r from-pink-600 to-rose-500 text-white w-56 py-5 rounded-full font-bold text-xl shadow-[0_0_30px_rgba(236,72,153,0.3)] hover:shadow-[0_0_50px_rgba(236,72,153,0.6)] transition-all active:scale-90">
+                YES
+            </button>
+            
+            <button id="no-btn" onmouseover="dodgeNo()" ontouchstart="dodgeNo()" 
+                    class="text-white/20 hover:text-white/40 border border-white/5 w-32 py-4 rounded-full text-sm">
+                No
+            </button>
+        </div>
+    </div>
+
+    <div id="final-section" class="hidden text-center z-50 animate__animated animate__fadeInUp">
+        <h1 class="pink-glow text-8xl md:text-9xl cursive mb-6">Yay! ❤️</h1>
+        <div class="glass-vault p-8 md:p-12 max-w-lg mx-auto bg-white/[0.02]">
+            <p class="text-gray-300 italic text-xl leading-relaxed mb-6">
+                "I’m so lucky to have you in my corner. Thank you for being my favorite person and my best friend."
+            </p>
+            <div class="h-[1px] w-20 bg-pink-500 mx-auto mb-6"></div>
+            <p class="text-pink-400 text-3xl cursive">Happy Valentine's Day, Gopika kuttiieee❤️!</p>
         </div>
     </div>
 
     <script>
-        function moveButton() {
-            const btn = document.getElementById('no-btn');
+        let attempts = 0;
+
+        function checkCode() {
+            const input = document.getElementById('secret-code');
+            const code = input.value;
             
-            // Calculate random positions
-            // Keeping it within 70% of the viewport to ensure it doesn't go off-screen
-            const maxX = window.innerWidth - btn.offsetWidth - 20;
-            const maxY = window.innerHeight - btn.offsetHeight - 20;
-            
-            const randomX = Math.floor(Math.random() * maxX);
-            const randomY = Math.floor(Math.random() * maxY);
-
-            btn.style.position = 'fixed';
-            btn.style.left = randomX + 'px';
-            btn.style.top = randomY + 'px';
-            btn.style.zIndex = '1000';
-        }
-
-        function handleYes() {
-            document.getElementById('question-card').classList.add('hidden');
-            const celeb = document.getElementById('celebration');
-            celeb.classList.remove('hidden');
-
-            // Celebration Fireworks Sequence
-            const end = Date.now() + (10 * 1000); // 10 seconds of fireworks
-            const colors = ['#ec4899', '#be123c', '#ffffff', '#fb7185'];
-
-            (function frame() {
-                confetti({
-                    particleCount: 3,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: colors
-                });
-                confetti({
-                    particleCount: 3,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: colors
-                });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
+            if(code === '22102000') {
+                unlockExperience();
+            } else {
+                attempts++;
+                input.classList.add('animate__animated', 'animate__shakeX');
+                input.value = '';
+                setTimeout(() => input.classList.remove('animate__animated', 'animate__shakeX'), 500);
+                
+                if(attempts >= 1) {
+                    document.getElementById('hint-text').classList.replace('opacity-0', 'opacity-100');
                 }
-            }());
-            
-            // Big burst at the start
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: colors
-            });
+            }
         }
+
+        function unlockExperience() {
+            // Transform UI
+            document.getElementById('lock-section').classList.add('animate__animated', 'animate__fadeOut');
+            document.body.classList.replace('noir-bg', 'valentine-bg');
+            
+            setTimeout(() => {
+                document.getElementById('lock-section').style.display = 'none';
+                const prop = document.getElementById('proposal-section');
+                prop.classList.remove('hidden');
+                document.getElementById('page-title').innerText = "For You, Gopika";
+                
+                // Start background heart rain
+                setInterval(createHeart, 300);
+            }, 1000);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'heart-particle';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '-20px';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.transition = `top ${Math.random() * 3 + 2}s linear, opacity 2s`;
+            document.getElementById('particles-container').appendChild(heart);
+
+            setTimeout(() => {
+                heart.style.top = '110vh';
+                heart.style.opacity = '0';
+            }, 100);
+
+            setTimeout(() => heart.remove(), 5000);
+        }
+
+        function dodgeNo() {
+            const btn = document.getElementById('no-btn');
+            const x = Math.random() * (window.innerWidth - 150);
+            const y = Math.random() * (window.innerHeight - 100);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+            btn.style.zIndex = '999';
+        }
+
+        function celebrate() {
+            document.getElementById('proposal-section').style.display = 'none';
+            document.getElementById('final-section').classList.remove('hidden');
+            
+            // Explosive Firework Sequence
+            const duration = 15 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+              const timeLeft = animationEnd - Date.now();
+
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              const particleCount = 50 * (timeLeft / duration);
+              
+              // Multiple bursts
+              confetti(Object.assign({}, defaults, { 
+                particleCount, 
+                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                colors: ['#ff4d6d', '#ffffff'] 
+              }));
+              confetti(Object.assign({}, defaults, { 
+                particleCount, 
+                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                colors: ['#ff4d6d', '#ffffff'] 
+              }));
+            }, 250);
+        }
+
+        // Handle enter key
+        document.getElementById('secret-code').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkCode();
+        });
     </script>
 </body>
 </html>
